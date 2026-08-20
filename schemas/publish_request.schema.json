@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/example/marketing-agent-assets/schemas/publish_request.schema.json",
+  "title": "Publish Request",
+  "oneOf": [
+    {
+      "title": "Video publish",
+      "type": "object",
+      "required": ["action", "videoUrl", "platforms"],
+      "properties": {
+        "action": { "const": "video.publish" },
+        "videoUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+        "platforms": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["instagram", "youtube", "tiktok"] } },
+        "title": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 5000 },
+        "caption": { "type": "string", "maxLength": 2200 },
+        "privacyStatus": { "enum": ["private", "unlisted", "public"], "default": "private" },
+        "credentialRef": { "type": "string", "maxLength": 200 }
+      },
+      "additionalProperties": false
+    },
+    {
+      "title": "Instagram carousel",
+      "type": "object",
+      "required": ["action", "imageUrls"],
+      "properties": {
+        "action": { "const": "instagram.carousel" },
+        "imageUrls": { "type": "array", "minItems": 2, "maxItems": 10, "items": { "type": "string", "format": "uri", "pattern": "^https://" } },
+        "caption": { "type": "string", "maxLength": 2200 },
+        "credentialRef": { "type": "string", "maxLength": 200 }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

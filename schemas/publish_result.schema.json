@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/example/marketing-agent-assets/schemas/publish_result.schema.json",
+  "title": "Publish Result",
+  "type": "object",
+  "required": ["jobId", "status", "results"],
+  "properties": {
+    "jobId": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["queued", "processing", "done", "failed"] },
+    "results": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": { "enum": ["published", "failed"] },
+          "url": { "type": "string", "format": "uri" },
+          "mediaId": { "type": "string" },
+          "videoId": { "type": "string" },
+          "error": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "error": { "type": "string" }
+  },
+  "additionalProperties": false
+}

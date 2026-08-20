@@ -1,0 +1,25 @@
+name: reddit-toolbox
+version: 0.1.0
+runtime: python
+entrypoint: api/toolbox.py
+browser_entrypoint: browser/toolbox.py
+legacy_source: legacy_combined_toolbox.py
+platform: reddit
+required_env:
+  - REDDIT_USER_AGENT
+optional_user_auth_env:
+  - REDDIT_ACCESS_TOKEN
+  - REDDIT_CLIENT_ID
+  - REDDIT_CLIENT_SECRET
+  - REDDIT_REFRESH_TOKEN
+oauth_scopes: [identity, read, submit, vote, save, subscribe, edit, privatemessages]
+rate_limit_note: Use a truthful unique User-Agent, follow subreddit rules, and respect Reddit Data API limits.
+actions:
+  api:
+    production_eligible: true
+    function_prefixes: [get_reddit_api_, search_reddit_api_, publish_reddit_api_, comment_reddit_api_, reply_reddit_api_, edit_reddit_api_, delete_reddit_api_, vote_reddit_api_, save_reddit_api_, unsave_reddit_api_, join_reddit_api_, leave_reddit_api_, hide_reddit_api_, unhide_reddit_api_]
+    writes_external_state: true
+  browser:
+    supervised_local_only: true
+    function_prefixes: [launch_reddit_browser, open_reddit_page, publish_reddit_text_post, publish_reddit_link_post, comment_reddit_post, reply_reddit_comment, upvote_reddit_post, join_reddit_community]
+    writes_external_state: true

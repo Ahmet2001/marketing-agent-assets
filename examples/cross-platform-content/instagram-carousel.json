@@ -1,0 +1,9 @@
+{
+  "action": "instagram.carousel",
+  "imageUrls": [
+    "https://cdn.example.com/campaign/card-1.jpg",
+    "https://cdn.example.com/campaign/card-2.jpg"
+  ],
+  "caption": "Two-slide campaign summary.",
+  "credentialRef": "brand-primary"
+}

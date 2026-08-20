@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/example/marketing-agent-assets/schemas/asset.schema.json",
+  "title": "Marketing Asset",
+  "type": "object",
+  "required": ["id", "kind", "url"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "kind": { "enum": ["video", "image", "audio", "document"] },
+    "url": { "type": "string", "format": "uri", "pattern": "^https://" },
+    "contentType": { "type": "string" },
+    "title": { "type": "string", "maxLength": 240 },
+    "altText": { "type": "string", "maxLength": 2000 },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "metadata": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false
+}

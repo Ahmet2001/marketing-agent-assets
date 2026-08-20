@@ -1,0 +1,16 @@
+# Secrets and local state
+.env
+.env.*
+!.env.example
+node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+workspace/
+*.session
+*.sqlite
+
+# Build artefacts
+dist/
+build/
+*.tgz

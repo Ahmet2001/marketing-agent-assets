@@ -1,0 +1,27 @@
+name: youtube-toolbox
+version: 0.1.0
+runtime: python
+entrypoint: api/toolbox.py
+browser_entrypoint: browser/toolbox.py
+legacy_source: legacy_combined_toolbox.py
+platform: youtube
+required_env:
+  - YOUTUBE_CLIENT_ID
+  - YOUTUBE_CLIENT_SECRET
+  - YOUTUBE_REFRESH_TOKEN
+optional_read_env:
+  - YOUTUBE_API_KEY
+oauth_scopes:
+  - https://www.googleapis.com/auth/youtube
+  - https://www.googleapis.com/auth/youtube.force-ssl
+  - https://www.googleapis.com/auth/yt-analytics.readonly
+rate_limit_note: Respect YouTube Data API quota units and Analytics API reporting availability.
+actions:
+  api:
+    production_eligible: true
+    function_prefixes: [get_youtube_api_, search_youtube_api_, comment_youtube_api_, reply_youtube_api_, update_youtube_api_, delete_youtube_api_, rate_youtube_api_, subscribe_youtube_api_, unsubscribe_youtube_api_, create_youtube_api_, add_youtube_api_, upload_youtube_api_, set_youtube_api_thumbnail]
+    writes_external_state: true
+  browser:
+    supervised_local_only: true
+    function_prefixes: [launch_youtube_browser, open_youtube_page, publish_youtube_video, comment_youtube_video, subscribe_youtube_channel, like_youtube_video]
+    writes_external_state: true

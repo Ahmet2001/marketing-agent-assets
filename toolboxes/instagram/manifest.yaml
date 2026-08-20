@@ -1,0 +1,25 @@
+name: instagram-toolbox
+version: 0.1.0
+runtime: python
+entrypoint: api/toolbox.py
+browser_entrypoint: browser/toolbox.py
+legacy_source: legacy_combined_toolbox.py
+platform: instagram
+required_env:
+  - INSTAGRAM_ACCESS_TOKEN
+  - INSTAGRAM_USER_ID
+oauth_scopes:
+  - instagram_basic
+  - instagram_content_publish
+  - instagram_manage_comments
+  - instagram_manage_insights
+rate_limit_note: Publishing and insights availability depend on account type, Meta app review, and Graph API limits.
+actions:
+  api:
+    production_eligible: true
+    function_prefixes: [get_instagram_api_, create_instagram_api_, publish_instagram_api_, reply_instagram_api_, set_instagram_api_, delete_instagram_api_]
+    writes_external_state: true
+  browser:
+    supervised_local_only: true
+    function_prefixes: [launch_instagram_browser, open_instagram_page, comment_instagram_post, send_instagram_message, publish_instagram_post, follow_instagram_account, like_instagram_post]
+    writes_external_state: true

@@ -1,0 +1,10 @@
+{
+  "action": "video.publish",
+  "videoUrl": "https://cdn.example.com/campaign/launch.mp4",
+  "title": "Launch day",
+  "description": "A concise launch announcement.",
+  "caption": "We are live. #launch",
+  "platforms": ["instagram", "youtube", "tiktok"],
+  "privacyStatus": "public",
+  "credentialRef": "brand-primary"
+}

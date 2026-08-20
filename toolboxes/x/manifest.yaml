@@ -1,0 +1,31 @@
+name: x-toolbox
+version: 0.1.0
+runtime: python
+entrypoint: api/toolbox.py
+browser_entrypoint: browser/toolbox.py
+legacy_source: legacy_combined_toolbox.py
+platform: x
+required_env:
+  - X_API_BEARER_TOKEN
+optional_user_auth_env:
+  - X_API_USER_BEARER_TOKEN
+  - X_API_KEY
+  - X_API_SECRET
+  - X_ACCESS_TOKEN
+  - X_ACCESS_TOKEN_SECRET
+oauth_scopes:
+  - tweet.read
+  - tweet.write
+  - users.read
+  - like.read
+  - like.write
+rate_limit_note: Respect endpoint-specific X API quotas and back off on 429 responses.
+actions:
+  api:
+    production_eligible: true
+    function_prefixes: [get_x_api_, search_x_api_, publish_x_api_, reply_to_x_api_, quote_x_api_, delete_x_api_, like_x_api_, unlike_x_api_, repost_x_api_, undo_x_api_repost, follow_x_api_, unfollow_x_api_]
+    writes_external_state: true
+  browser:
+    supervised_local_only: true
+    function_prefixes: [launch_x_browser, open_x_page, publish_x_post, reply_to_x_post, like_x_post, bookmark_x_post, repost_x_post, follow_x_account]
+    writes_external_state: true
