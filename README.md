@@ -26,17 +26,17 @@ Use [publish_request.schema.json](./schemas/publish_request.schema.json) to crea
 
 ## Current and target architecture
 
-Today, the application creates approved publishing jobs and the social-media worker executes them. The future system has three cooperating components:
+Today, the application creates approved publishing jobs and the social-media worker executes them. The target system has three cooperating components:
 
 ```text
-App → Social-media worker → Marketing agent
+App ⇄ Social-media worker environment ⇄ Marketing agent
 ```
 
-- **App** owns users, source content, approval, and product-specific integrations.
-- **Social-media worker** connects to the app through environment configuration and job contracts. It handles deterministic operational work: collecting configured content assets/data, validating media, preparing a job, and publishing approved video or carousel content. Until the agent exists, the worker also handles a deliberately small, algorithmic subset of operational decisions.
-- **Marketing agent** is the planned reasoning layer. It will read approved toolbox data and skills, then handle content strategy, content creation, video-generation briefs, and publishing plans. It will create validated jobs for the worker rather than holding platform credentials in prompts.
+- **App** owns users, source content, approval state, rendering/video-generation capabilities, and product-specific integrations.
+- **Social-media worker environment** is the agent's operational connection to the app. Through explicit environment configuration and contracts, it collects approved content assets and platform data, validates media, performs deterministic preparation, and executes approved platform actions. It is not a general reasoning layer.
+- **Marketing agent** is the planned reasoning and workflow layer. It reads the worker-collected asset/data context plus relevant skills, then manages content creation, video-generation workflows, and publication decisions. It asks the worker to execute validated actions rather than placing credentials or uncontrolled network access in an LLM prompt.
 
-The worker is not the strategy engine. Its temporary algorithmic responsibilities should shrink as the agent is introduced.
+Until the agent exists, the worker owns a deliberately small and explainable algorithmic subset of those workflow decisions. This is a temporary bridge, not the final architecture. The long-term responsibility map and migration path are in [future_work.md](./future_work.md).
 
 ## Skills
 
@@ -50,7 +50,7 @@ Skills are LLM instruction assets, not servers or worker code. They guide an age
 
 ## Status
 
-The worker, schemas, examples, toolboxes, and five initial skills are included. The agent implementation is intentionally deferred; its detailed state, scheduler, router, and prompt design belong in the later `future_work.md` planning stage.
+The worker, schemas, examples, toolboxes, and five initial skills are included. The agent implementation is intentionally deferred; its detailed state, scheduler, router, and prompt design are planned in [future_work.md](./future_work.md).
 
 ## License and platform terms
 
