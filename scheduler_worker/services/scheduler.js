@@ -1,17 +1,19 @@
 // Scheduled content pipeline: on its own interval, picks the next idea from
 // the content pool (services/contentPool.js), generates cards/a lesson via
-// this same API, then publishes it -- all as plain HTTP calls to the
-// backend's own /api endpoints (auth'd via the shared X-Scheduler-Token,
-// see services/requestAuth.js), same as any other client would. Started by
-// workers/scheduler.js as its own process/service -- deliberately separate
-// from workers/socialPublisher.js (the generic publish_jobs worker), so
-// scaling the publisher to multiple replicas never duplicates this loop's
-// setInterval tick. On Kara Tahta's own Railway account this had to be
-// embedded into socialPublisher.js instead because the plan's resource
-// limit blocked a 5th service -- run it separately whenever that
-// constraint doesn't apply.
+// the target backend, then publishes it -- all as plain HTTP calls to that
+// backend's own /api endpoints (auth'd via the shared X-Scheduler-Token),
+// same as any other client would. Started by workers/scheduler.js as its
+// own process, deliberately separate from a publish-jobs worker (like
+// social-media-worker's) -- this loop's setInterval tick must run exactly
+// once, so it should never share a process with something that might be
+// scaled to multiple replicas.
+//
+// This file is Kara Tahta's original scheduler, packaged as its own
+// deployable unit: it still calls Kara Tahta's specific endpoint contract
+// (/api/cards/generate, /api/generate-lesson, /api/social-publish). Point
+// BACKEND_INTERNAL_URL at any backend that exposes the same contract.
 import { pickNextContentPoolItem } from './contentPool.js';
-import { getSchedulerJob, updateSchedulerJob } from './supabaseStore.js';
+import { getSchedulerJob, updateSchedulerJob } from './schedulerStore.js';
 
 const BACKEND_URL = String(process.env.BACKEND_INTERNAL_URL || '').replace(/\/+$/, '');
 const INTERNAL_TOKEN = process.env.SCHEDULER_INTERNAL_TOKEN || '';
@@ -84,7 +86,7 @@ async function runCardsCarousel(idea) {
 
   const publishResponse = await internalFetch(`/api/cards/sessions/${sessionId}/publish-instagram`, {
     method: 'POST',
-    body: JSON.stringify({ caption: `Kara Tahta | ${idea}` })
+    body: JSON.stringify({ caption: `${idea}` })
   });
   const publishData = await publishResponse.json();
   if (!publishResponse.ok) {
@@ -93,12 +95,6 @@ async function runCardsCarousel(idea) {
   return { sessionId, cardCount, instagram: publishData };
 }
 
-// Was temporarily shortened (3 segments / 3.5 min) to dodge a final-concat
-// OOM under the single trial-plan render-worker replica -- concatVideos()
-// now uses the concat demuxer (buildConcatArgs) instead of a filter_complex
-// graph that held every segment's decoder open at once, which was the
-// actual source of the memory blowup. Restored to the normal topic-mode
-// default now that the root cause is fixed.
 const SCHEDULED_VIDEO_SEGMENT_COUNT = Math.max(1, Number(process.env.SCHEDULER_VIDEO_SEGMENT_COUNT) || 8);
 const SCHEDULED_VIDEO_MINUTES = Math.max(1, Number(process.env.SCHEDULER_VIDEO_MINUTES) || 10);
 
@@ -151,7 +147,7 @@ async function runLessonVideo(idea) {
     body: JSON.stringify({
       lesson_id: lessonId,
       title: idea,
-      caption: `Kara Tahta | ${idea}`,
+      caption: `${idea}`,
       privacy_status: 'public'
     })
   });
@@ -164,7 +160,7 @@ async function runLessonVideo(idea) {
 
 // Same idea, two posts in sequence: full lesson video first (YouTube +
 // Instagram Reel), then -- once it's had a few minutes to actually appear --
-// a second Instagram post as a kart carousel of the same topic.
+// a second Instagram post as a card carousel of the same topic.
 async function runCombo(idea) {
   const lesson = await runLessonVideo(idea);
   log('Combo: video adimi bitti, carousel icin bekleniyor', { idea, gapMs: COMBO_GAP_MS });
