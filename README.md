@@ -26,7 +26,7 @@ Read the [future architecture and delivery plan](./future_work.md) for the respo
 | Area | What it provides |
 | --- | --- |
 | [`social-media-worker/`](./social-media-worker) | Node.js queue worker for video publishing and Instagram carousels. |
-| [`toolboxes/`](./toolboxes) | Official-API and supervised-browser capabilities for X, Instagram, Reddit, and YouTube. |
+| [`toolboxes/`](./toolboxes) | Official-API and supervised-browser capabilities for X, Instagram, Reddit, YouTube, and TikTok. |
 | [`skills/`](./skills) | LLM decision guides for strategy, repurposing, publishing, engagement, and analysis. |
 | [`schemas/`](./schemas) | Shared JSON contracts for assets, publish requests, and publish results. |
 | [`examples/`](./examples) | Small, portable examples for campaigns, scheduling, and cross-platform content. |

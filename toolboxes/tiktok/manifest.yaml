@@ -1,0 +1,24 @@
+name: tiktok-toolbox
+version: 0.1.0
+runtime: python
+entrypoint: api/toolbox.py
+browser_entrypoint: browser/toolbox.py
+legacy_source: legacy_combined_toolbox.py
+platform: tiktok
+required_env:
+  - TIKTOK_ACCESS_TOKEN
+oauth_scopes:
+  - user.info.basic
+  - video.list
+  - video.publish
+  - video.upload
+rate_limit_note: Respect TikTok API rate limits. Direct Post requires an approved app and user authorization; posts from unaudited clients are restricted to private visibility.
+actions:
+  api:
+    production_eligible: true
+    function_prefixes: [get_tiktok_api_, list_tiktok_api_, init_tiktok_api_, upload_tiktok_api_, publish_tiktok_api_]
+    writes_external_state: true
+  browser:
+    supervised_local_only: true
+    function_prefixes: [launch_tiktok_browser, open_tiktok_page, like_tiktok_video, unlike_tiktok_video, follow_tiktok_account, unfollow_tiktok_account, comment_tiktok_video, publish_tiktok_video]
+    writes_external_state: true

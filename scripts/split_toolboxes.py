@@ -93,7 +93,7 @@ def render_module(source_path: Path, destination: Path, mode: str) -> None:
 
 
 def main() -> None:
-    for platform in ('x', 'instagram', 'reddit', 'youtube'):
+    for platform in ('x', 'instagram', 'reddit', 'youtube', 'tiktok'):
         directory = ROOT / 'toolboxes' / platform
         legacy = directory / 'legacy_combined_toolbox.py'
         if not legacy.exists():
